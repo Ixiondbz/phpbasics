@@ -1,9 +1,6 @@
-<?php 
-$connection = mysqli_connect('localhost','root','');
-if(!$connection)
-{
-    echo "Failed to connect to database! 😥";
-}
+<?php
+include "functions.php";
+connect_to_db();
 ?>
 
 <!DOCTYPE html>
@@ -19,18 +16,18 @@ if(!$connection)
     <h1>Tuition Platform</h1>
     <nav>
         <ul>
-            <li><a href="">request a tutor</a></li>
-            <li><a href="">tutors list</a></li>
-            <li><a href="">how to use</a></li>
-            <li><a href="">become a tutor</a></li>
-            <li><a href="">jobs list</a></li>
-            <li><a href="">login</a></li>
+            <li><a href="request a tuition.php">request a tuition</a></li>
+            <!-- <li><a href="">tutors list</a></li> -->
+            <!-- <li><a href="">how to use</a></li> -->
+            <!-- <li><a href="">become a tutor</a></li> -->
+            <li><a href="tuition list.php">tuition list</a></li>
+            <!-- <li><a href="">login</a></li> -->
         </ul>
     </nav>
 
     <form action="/action_page.php">
-<p>Search for Tuitions</p>
-    <input type="search" name="search" id="">
+        <p>Search for Tuitions</p>
+        <input type="search" name="search" id="">
         <input type="submit" value="Submit">
     </form>
 
