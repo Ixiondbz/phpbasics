@@ -1,16 +1,8 @@
-<?php
-include "../functions.php";
+<?php include "../includes/functions.php"; ?>
 
+<?php
 #connect to xampp database
 connect_to_db();
-
-// GET INFO FROM DATABASE
-$query = queryline("SELECT `parent name`, `student name`, `student class`, `student subjects`, 
-    `teaching location`, `additional notes` 
-    FROM `tuition request`");
-
-$result = mysqli_query($connection, $query);
-
 ?>
 
 <!DOCTYPE html>
@@ -24,7 +16,7 @@ $result = mysqli_query($connection, $query);
     <h1>Tuition list</h1>
     <table>
         <tr>
-            <th>parent name</th> 
+            <th>parent name</th>
             <th>student name</th>
             <th>class</th>
             <th>subjects</th>
@@ -33,34 +25,7 @@ $result = mysqli_query($connection, $query);
         </tr>
 
         <?php
-        if (!$result) {
-            die("Query Failed" . mysqli_error());
-        } else {
-            while ($row = mysqli_fetch_assoc($result)) {
-
-
-
-                ?>
-                <tr>
-                    <?php
-                    foreach ($row as $key => $value) {
-                        ?>
-                        <td>
-                            <?php
-                            echo $value;
-                            ?>
-                        </td>
-                        <?php
-                    }
-
-                    ?>
-                </tr>
-
-
-                <?php
-            }
-        }
-
+        read_tuition_requests_without_id();
         ?>
     </table>
 

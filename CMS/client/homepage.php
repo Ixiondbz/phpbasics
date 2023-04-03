@@ -1,5 +1,6 @@
+<?php include "../includes/functions.php"; ?>
 <?php
-include "../functions.php";
+
 connect_to_db();
 
 
@@ -28,8 +29,8 @@ connect_to_db();
     </nav>
 
     <form action="tuition search.php" method="post">
-        <p>Search for Tuitions</p>
-        <input type="search" name="search" id="">
+        <p>Search for tuitions near you!</p>
+        <input type="search" name="search" id="" placeholder="search by locations">
         <input type="submit" name="submit">
     </form>
 

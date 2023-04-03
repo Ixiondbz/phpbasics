@@ -1,6 +1,6 @@
-<?php
-include "../functions.php";
+<?php include "../includes/functions.php"; ?>
 
+<?php
 connect_to_db();
 ?>
 
@@ -25,71 +25,25 @@ connect_to_db();
             <!-- <li><a href="">login</a></li> -->
         </ul>
     </nav>
-<?php
-if (isset($_POST['submit'])) {
-    $search_string = $_POST['search'];
-
-    $query = queryline("SELECT `parent name`, `student name`, `student class`, `student subjects`, 
-    `teaching location`, `additional notes` FROM `tuition request`
-                       WHERE `teaching location` LIKE '%$search_string%'");
-
-    $search_query = mysqli_query($connection, $query);
-    if (!$search_query) {
-        die('QUERY FAILED');
-    } else {
-        $count = mysqli_num_rows($search_query);
-        if ($count == 0) {
-            echo "no search results found ☹️";
-        } else {
-            ?>
-            <table>
-                <tr>
-                    <th>parent name</th>
-                    <th>student name</th>
-                    <th>class</th>
-                    <th>subjects</th>
-                    <th>location</th>
-                    <th>additional notes</th>
-                </tr>
-
-                <?php
-                if (!$search_query) {
-                    die("Query Failed" . mysqli_error());
-                } else {
-                    while ($row = mysqli_fetch_assoc($search_query)) {
-
-
-
-                        ?>
-                        <tr>
-                            <?php
-                            foreach ($row as $key => $value) {
-                                ?>
-                                <td>
-                                    <?php
-                                    echo $value;
-                                    ?>
-                                </td>
-                                <?php
-                            }
-
-                            ?>
-                        </tr>
-
-
-                        <?php
-                    }
-                }
-
-                ?>
-            </table>
-
+    <table>
+        <tr>
+            <th>parent name</th>
+            <th>student name</th>
+            <th>class</th>
+            <th>subjects</th>
+            <th>location</th>
+            <th>additional notes</th>
+        </tr>
         <?php
-        }
-    }
-}
-?>
 
+        search_tuitions_by_location();
+
+        ?>
+    </table>
+
+    <div>
+        <a href="homepage.php">Search again</a>
+    </div>
     <footer>
         <ul>
             <li><a href="">Privacy policy</a></li>

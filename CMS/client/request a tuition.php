@@ -1,6 +1,5 @@
+<?php include "../includes/functions.php"; ?>
 <?php
-include "../functions.php";
-#connect to xampp database
 connect_to_db();
 
 
