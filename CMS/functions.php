@@ -20,6 +20,5 @@ function echobr($string_var)
 {
     echo $string_var;
     echo "<br>";
-    echo PHP_EOL;
 }
 ?>

@@ -13,7 +13,7 @@
     <h1>Manager</h1>
     <nav>
         <ul>
-            <li><a href="">tuition requests 🔗</a></li>
+            <li><a href="tuition requests.php">tuition requests 🔗</a></li>
             <!-- <li><a href="">verify ✅</a></li> -->
             <li><a href="">dashboard 🛹</a></li>
             <li><a href="">clients 👤</a></li>

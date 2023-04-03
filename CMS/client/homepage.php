@@ -1,13 +1,15 @@
 <?php
-include "functions.php";
+include "../functions.php";
 connect_to_db();
+
+
 ?>
 
 <!DOCTYPE html>
 <html>
 
 <head>
-    <title>Manager</title>
+    <title>Homepage</title>
     <link rel='stylesheet' type='text/css' media='screen' href='../css/styles.css'>
     <script src='../js/main.js'></script>
 </head>
@@ -25,10 +27,10 @@ connect_to_db();
         </ul>
     </nav>
 
-    <form action="/action_page.php">
+    <form action="tuition search.php" method="post">
         <p>Search for Tuitions</p>
         <input type="search" name="search" id="">
-        <input type="submit" value="Submit">
+        <input type="submit" name="submit">
     </form>
 
     <footer>

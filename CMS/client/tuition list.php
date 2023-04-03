@@ -1,11 +1,8 @@
 <?php
-include "functions.php";
+include "../functions.php";
+
 #connect to xampp database
 connect_to_db();
-
-
-
-
 
 // GET INFO FROM DATABASE
 $query = queryline("SELECT `parent name`, `student name`, `student class`, `student subjects`, 
@@ -27,7 +24,7 @@ $result = mysqli_query($connection, $query);
     <h1>Tuition list</h1>
     <table>
         <tr>
-            <th>parent name</th>
+            <th>parent name</th> 
             <th>student name</th>
             <th>class</th>
             <th>subjects</th>
@@ -40,22 +37,30 @@ $result = mysqli_query($connection, $query);
             die("Query Failed" . mysqli_error());
         } else {
             while ($row = mysqli_fetch_assoc($result)) {
+
+
+
                 ?>
                 <tr>
-                    <th>
-                        <?php
-                        echo $row['parent name'];
+                    <?php
+                    foreach ($row as $key => $value) {
                         ?>
-                    </th>
-                    <th>
+                        <td>
+                            <?php
+                            echo $value;
+                            ?>
+                        </td>
                         <?php
-                        echo $row['student name'];
-                        ?>
-                    </th>
+                    }
+
+                    ?>
                 </tr>
+
+
                 <?php
             }
         }
+
         ?>
     </table>
 
