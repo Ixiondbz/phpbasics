@@ -1,3 +1,5 @@
+<?php ob_start();
+?>
 <?php
 
 function connect_to_db()
@@ -82,7 +84,7 @@ FROM `tuition request`");
     $result = mysqli_query($connection, $query);
 
     if (!$result) {
-        die("Query Failed" . mysqli_error());
+        die("Query Failed" . mysqli_error($connection));
     } else {
         while ($row = mysqli_fetch_assoc($result)) {
 
@@ -160,10 +162,24 @@ function edit_tuition_requests()
             $teaching_location = $row['teaching location'];
             $additional_notes = $row['additional notes'];
             ?>
+
+            <!-- <table class="table table-bordered table-hover">
+                <tr>
+                    <td>parent anme</td>
+                    <td>student name</td>
+                    <td>class</td>
+                    <td>subjects</td>
+                    <td>location</td>
+                    <td>additional notes</td>
+                </tr>
+            </table> -->
+
             <form action="tuition requests.php" method="post">
+
                 <input type="hidden" name="edit_id" value="<?php if (isset($id)) {
                     echo $id;
                 } ?>" />
+
 
                 <input value="<?php if (isset($parent_name)) {
                     echo $parent_name;
@@ -235,7 +251,7 @@ function search_tuitions_by_location()
                 ?>
                 <?php
                 if (!$search_query) {
-                    die("Query Failed" . mysqli_error());
+                    die("Query Failed" . mysqli_error($connection));
                 } else {
                     while ($row = mysqli_fetch_assoc($search_query)) {
 

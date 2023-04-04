@@ -1,30 +1,55 @@
 <?php include "../includes/functions.php"; ?>
-
+<?php
+connect_to_db();
+?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
-<head>
-    <title>Manager</title>
-    <link rel='stylesheet' 
-    type='text/css' media='screen' 
-    href=''>
-    <script src=''></script>
-</head>
+<?php
+include "includes/header.php";
+?>
 
 <body>
-    <h1>Manager</h1>
-    <nav>
-        <ul>
-            <li><a href="tuition requests.php">tuition requests 🔗</a></li>
-            <!-- <li><a href="">verify ✅</a></li> -->
-            <li><a href="">dashboard 🛹</a></li>
-            <li><a href="">clients 👤</a></li>
-        
-        </ul>
-    </nav>
 
-    <p>Welcome to Manager page</p>
-    
+    <div id="wrapper">
+
+        <?php
+        include "includes/navigation.php";
+        ?>
+        <div id="page-wrapper">
+
+            <div class="container-fluid">
+
+                <!-- Page Heading -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1 class="page-header">
+                            Manager
+                            <small>Basepage</small>
+                        </h1>
+                        <ol class="breadcrumb">
+                            <li>
+                                <a href="">⚾ Basepage</a>
+                            </li>
+                            <li class="active">
+                                <i class="fa fa-file"></i> Blank Page
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
 </body>
 
 </html>
