@@ -41,18 +41,18 @@ FROM `tuition request`");
 
             $id = $row['id'];
 
-            ?>
+?>
             <tr>
                 <?php
                 foreach ($row as $key => $value) {
-                    ?>
+                ?>
                     <td>
                         <?php
                         echo $value;
                         ?>
                     </td>
 
-                    <?php
+                <?php
                 }
 
                 ?>
@@ -68,7 +68,7 @@ FROM `tuition request`");
             </tr>
 
 
-            <?php
+        <?php
         }
     }
 }
@@ -88,27 +88,26 @@ FROM `tuition request`");
     } else {
         while ($row = mysqli_fetch_assoc($result)) {
 
-            ?>
+        ?>
             <tr>
                 <?php
                 foreach ($row as $key => $value) {
-                    ?>
+                ?>
                     <td>
                         <?php
                         echo $value;
                         ?>
                     </td>
-                    <?php
+                <?php
                 }
 
                 ?>
             </tr>
 
 
-            <?php
+        <?php
         }
     }
-
 }
 
 function update_tuition_requests()
@@ -161,7 +160,7 @@ function edit_tuition_requests()
             $student_subjects = $row['student subjects'];
             $teaching_location = $row['teaching location'];
             $additional_notes = $row['additional notes'];
-            ?>
+        ?>
 
             <!-- <table class="table table-bordered table-hover">
                 <tr>
@@ -177,33 +176,33 @@ function edit_tuition_requests()
             <form action="tuition requests.php" method="post">
 
                 <input type="hidden" name="edit_id" value="<?php if (isset($id)) {
-                    echo $id;
-                } ?>" />
+                                                                echo $id;
+                                                            } ?>" />
 
 
                 <input value="<?php if (isset($parent_name)) {
-                    echo $parent_name;
-                } ?>" type="text" name="parent_name" id="">
+                                    echo $parent_name;
+                                } ?>" type="text" name="parent_name" id="">
 
                 <input value="<?php if (isset($student_name)) {
-                    echo $student_name;
-                } ?>" type="text" name="student_name" id="">
+                                    echo $student_name;
+                                } ?>" type="text" name="student_name" id="">
 
                 <input value="<?php if (isset($student_class)) {
-                    echo $student_class;
-                } ?>" type="text" name="student_class" id="">
+                                    echo $student_class;
+                                } ?>" type="text" name="student_class" id="">
 
                 <input value="<?php if (isset($student_subjects)) {
-                    echo $student_subjects;
-                } ?>" type="text" name="student_subjects" id="">
+                                    echo $student_subjects;
+                                } ?>" type="text" name="student_subjects" id="">
 
                 <input value="<?php if (isset($teaching_location)) {
-                    echo $teaching_location;
-                } ?>" type="text" name="teaching_location" id="">
+                                    echo $teaching_location;
+                                } ?>" type="text" name="teaching_location" id="">
 
                 <input value="<?php if (isset($additional_notes)) {
-                    echo $additional_notes;
-                } ?>" type="text" name="additional_notes" id="">
+                                    echo $additional_notes;
+                                } ?>" type="text" name="additional_notes" id="">
 
 
                 <input type="submit" name="update" value="update">
@@ -212,8 +211,6 @@ function edit_tuition_requests()
 
             <?php
         }
-
-
     }
 }
 
@@ -225,6 +222,7 @@ function delete_tuition_requests()
         $delete_id = $_GET['delete'];
         $query = queryline("DELETE FROM `tuition request` WHERE id={$delete_id}");
         $delete_query = mysqli_query($connection, $query);
+        echo "Deleted successfully";
         header("Location: tuition requests.php");
     }
 }
@@ -248,7 +246,7 @@ function search_tuitions_by_location()
             if ($count == 0) {
                 echo "no search results found ☹️";
             } else {
-                ?>
+            ?>
                 <?php
                 if (!$search_query) {
                     die("Query Failed" . mysqli_error($connection));
@@ -257,30 +255,30 @@ function search_tuitions_by_location()
 
 
 
-                        ?>
+                ?>
                         <tr>
                             <?php
                             foreach ($row as $key => $value) {
-                                ?>
+                            ?>
                                 <td>
                                     <?php
                                     echo $value;
                                     ?>
                                 </td>
-                                <?php
+                            <?php
                             }
 
                             ?>
                         </tr>
 
 
-                        <?php
+                <?php
                     }
                 }
 
                 ?>
 
-                <?php
+<?php
             }
         }
     }
