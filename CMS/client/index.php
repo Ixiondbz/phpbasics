@@ -2,7 +2,9 @@
 <?php
 connect_to_db();
 ?>
+<?php
 
+?>
 <!DOCTYPE html>
 <html>
 
@@ -20,7 +22,10 @@ connect_to_db();
             <div class="col-md-8">
 
                 <h1 class="page-header">
-                    Welcome to TuitionPlatform
+                    Welcome <?php if (isset($_SESSION['user_email']) or isset($_SESSION['user_phone'])) {
+                                // echo "logged in";
+                                echo $_SESSION['user_full_name'];
+                            } else echo "to TuitionPlatform" ?>
                     <small></small>
                 </h1>
 

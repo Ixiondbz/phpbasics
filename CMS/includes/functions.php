@@ -1,6 +1,7 @@
 <?php ob_start();
 ?>
 <?php
+session_start();
 
 function connect_to_db()
 {
@@ -332,6 +333,7 @@ function login_user($email_or_phone, $password)
         $_SESSION['user_phone'] = $db_user_phone;
         $_SESSION['user_full_name'] = $db_user_full_name;
         $_SESSION['user_type'] = $db_user_type;
+        // return;
         redirect("index.php");
     } else {
         echo "authentication failed";
