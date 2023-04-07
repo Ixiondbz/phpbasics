@@ -48,8 +48,7 @@ connect_to_db();
 
                     <form action="tuition search.php" method="post">
                         <div class="input-group">
-                            <input class="form-control" type="search" name="search" id=""
-                                placeholder="search by locations">
+                            <input class="form-control" type="search" name="search" id="" placeholder="search by locations">
                             <span class="input-group-btn">
                                 <button name="submit" class="btn btn-default" type="submit">
                                     <span class="glyphicon glyphicon-search"></span>
@@ -109,16 +108,7 @@ connect_to_db();
 
         <hr>
 
-        <!-- Footer -->
-        <footer>
-            <div class="row">
-                <div class="col-lg-12">
-                    <p>Copyright &copy; Your Website 2014</p>
-                </div>
-                <!-- /.col-lg-12 -->
-            </div>
-            <!-- /.row -->
-        </footer>
+
 
     </div>
     <!-- /.container -->
@@ -129,7 +119,7 @@ connect_to_db();
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
 
-
+    <!-- Footer -->
     <?php include "includes/footer.php"; ?>
 </body>
 

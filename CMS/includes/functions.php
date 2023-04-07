@@ -284,4 +284,105 @@ function search_tuitions_by_location()
     }
 }
 
+function is_method($method = null)
+{
+    if ($_SERVER['REQUEST_METHOD'] == strtoupper($method)) {
+
+        return true;
+    }
+
+    return false;
+}
+
+function redirect($location)
+{
+    header("Location:" . $location);
+    exit;
+}
+
+function login_user($email_or_phone, $password)
+{
+    global $connection;
+    $email_or_phone = mysqli_real_escape_string($connection, trim($email_or_phone));
+    $password = mysqli_real_escape_string($connection, trim($password));
+
+    $query = queryline("SELECT * from user WHERE user_email = ? OR user_phone = ?");
+    $statement = mysqli_prepare($connection, $query);
+    mysqli_stmt_bind_param($statement, 'ss', $email_or_phone, $email_or_phone);
+    mysqli_stmt_execute($statement);
+    mysqli_stmt_bind_result($statement, $user_id, $user_full_name, $user_email, $user_phone, $user_type, $user_password, $user_image);
+    mysqli_stmt_fetch($statement);
+
+    if (!mysqli_stmt_num_rows($statement) === 0) {
+        die("QUERY FAILED" . mysqli_error($connection));
+    }
+
+    $db_user_id = $user_id;
+    $db_user_full_name = $user_full_name;
+    $db_user_email = $user_email;
+    $db_user_phone = $user_phone;
+    $db_user_type = $user_type;
+    $db_user_password = $user_password;
+    $db_user_image = $user_image;
+
+
+    if (password_verify($password, $db_user_password)) {
+
+        $_SESSION['user_email'] = $db_user_email;
+        $_SESSION['user_phone'] = $db_user_phone;
+        $_SESSION['user_full_name'] = $db_user_full_name;
+        $_SESSION['user_type'] = $db_user_type;
+        redirect("index.php");
+    } else {
+        echo "authentication failed";
+
+        return false;
+    }
+
+
+    return true;
+}
+function get_email_or_blank($str)
+{
+    $email_regex = '/^(?!(?:(?:\\x22?\\x5C[\\x00-\\x7E]\\x22?)|(?:\\x22?[^\\x5C\\x22]\\x22?)){255,})(?!(?:(?:\\x22?\\x5C[\\x00-\\x7E]\\x22?)|(?:\\x22?[^\\x5C\\x22]\\x22?)){65,}@)(?:(?:[\\x21\\x23-\\x27\\x2A\\x2B\\x2D\\x2F-\\x39\\x3D\\x3F\\x5E-\\x7E\\pL\\pN]+)|(?:\\x22(?:[\\x01-\\x08\\x0B\\x0C\\x0E-\\x1F\\x21\\x23-\\x5B\\x5D-\\x7F\\pL\\pN]|(?:\\x5C[\\x00-\\x7F]))*\\x22))(?:\\.(?:(?:[\\x21\\x23-\\x27\\x2A\\x2B\\x2D\\x2F-\\x39\\x3D\\x3F\\x5E-\\x7E\\pL\\pN]+)|(?:\\x22(?:[\\x01-\\x08\\x0B\\x0C\\x0E-\\x1F\\x21\\x23-\\x5B\\x5D-\\x7F\\pL\\pN]|(?:\\x5C[\\x00-\\x7F]))*\\x22)))*@(?:(?:(?!.*[^.]{64,})(?:(?:(?:xn--)?[a-z0-9]+(?:-+[a-z0-9]+)*\\.){1,126}){1,}(?:(?:[a-z][a-z0-9]*)|(?:(?:xn--)[a-z0-9]+))(?:-+[a-z0-9]+)*)|(?:\\[(?:(?:IPv6:(?:(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){7})|(?:(?!(?:.*[a-f0-9][:\\]]){7,})(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,5})?::(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,5})?)))|(?:(?:IPv6:(?:(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){5}:)|(?:(?!(?:.*[a-f0-9]:){5,})(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,3})?::(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,3}:)?)))?(?:(?:25[0-5])|(?:2[0-4][0-9])|(?:1[0-9]{2})|(?:[1-9]?[0-9]))(?:\\.(?:(?:25[0-5])|(?:2[0-4][0-9])|(?:1[0-9]{2})|(?:[1-9]?[0-9]))){3}))\\]))$/iDu';
+    if (preg_match($email_regex, $str)) {
+        return $str;
+    }
+    return '';
+}
+function get_phone_or_blank($str)
+{
+    $phone_regex = '/(^(\+88|0088)?(01){1}[3456789]{1}(\d){8})$/';
+    if (preg_match($phone_regex, $str)) {
+        return $str;
+    }
+    return '';
+}
+function register_user($email_or_phone, $password)
+{
+
+    global $connection;
+
+    $email_or_phone = mysqli_real_escape_string($connection, $email_or_phone);
+    $password = password_hash(mysqli_real_escape_string($connection, $password), PASSWORD_BCRYPT, array('cost' => 12));
+    // echo "asd";
+    // return;
+    $email = get_email_or_blank($email_or_phone);
+    $phone = get_phone_or_blank($email_or_phone);
+
+    $query = queryline("INSERT INTO user(user_email, user_phone, user_password)");
+    $query .= queryline("VALUES(?,?,?)"); // order: user_email, user_phone, user_password
+    $statement = mysqli_prepare($connection, $query);
+    mysqli_stmt_bind_param($statement, 'sss', $email, $phone, $password);
+    mysqli_stmt_execute($statement);
+    // mysqli_stmt_bind_result($statement, $result);
+    // mysqli_stmt_fetch($statement);
+
+    if (!mysqli_stmt_affected_rows($statement) === 0) {
+        die("QUERY FAILED" . mysqli_error($connection));
+    }
+
+    echo "registered";
+}
+
 ?>
