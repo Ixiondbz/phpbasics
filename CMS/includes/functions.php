@@ -10,10 +10,6 @@ function connect_to_db()
     if (!$connection) {
         echo "Failed to connect to database! 😥";
     }
-    // else 
-    // {
-    //     echo "yea buddy";
-    // }
 }
 function queryline($query_string)
 {
@@ -377,14 +373,18 @@ function register_user($email_or_phone, $password)
     $statement = mysqli_prepare($connection, $query);
     mysqli_stmt_bind_param($statement, 'sss', $email, $phone, $password);
     mysqli_stmt_execute($statement);
-    // mysqli_stmt_bind_result($statement, $result);
-    // mysqli_stmt_fetch($statement);
 
     if (!mysqli_stmt_affected_rows($statement) === 0) {
         die("QUERY FAILED" . mysqli_error($connection));
     }
 
-    echo "registered";
+    echo "Registration successful! You can Login now. 😊";
+    // redirect('login.php');
 }
+
+function is_logged_in()
+{   
+    return (isset($_SESSION['user_email']) or isset($_SESSION['user_phone']));
+}   
 
 ?>

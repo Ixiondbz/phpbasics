@@ -2,12 +2,15 @@
 <?php
 connect_to_db();
 ?>
-<?php
+<?php ob_start();
+if (is_logged_in()) {
+    redirect('index.php');
+}
 if (is_method('post')) {
-    if (isset($_POST['email_or_phone']) && isset($_POST['password'])) {
-        register_user($_POST['email_or_phone'], $_POST['password']);
+    if (isset($_POST['email_or_phone']) && isset($_POST['password1']) && isset($_POST['password2']) && $_POST['password1'] === $_POST['password2'] && $_POST['email_or_phone'] !== '' && $_POST['password1'] !== '') {
+        register_user($_POST['email_or_phone'], $_POST['password1']);
     } else {
-        redirect('/CMS/register.php');
+        echo "Error! Please fill up all of the fields and follow the instructions carefully.";
     }
 }
 
@@ -51,10 +54,15 @@ if (is_method('post')) {
                                         <div class="form-group">
                                             <div class="input-group">
                                                 <span class="input-group-addon"><i class="glyphicon glyphicon-lock color-blue"></i></span>
-                                                <input autocomplete=off name="password" type="password" class="form-control" placeholder="Enter Password">
+                                                <input autocomplete=off name="password1" type="password" class="form-control" placeholder="Enter Password">
                                             </div>
                                         </div>
-
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-lock color-blue"></i></span>
+                                                <input autocomplete=off name="password2" type="password" class="form-control" placeholder="Enter the Password above again">
+                                            </div>
+                                        </div>
                                         <div class="form-group">
 
                                             <input name="register" class="btn btn-lg btn-primary btn-block" value="Register" type="submit">

@@ -20,13 +20,14 @@
                     <a href="tuition list.php">Tuition list</a>
                 </li>
                 <li>
-                    <?php if (isset($_SESSION['user_email']) or isset($_SESSION['user_phone'])) echo '<a href="logout.php">Logout</a>' ;
+                    <?php if (is_logged_in()) echo '<a href="logout.php">Logout</a>' ;
                         else echo '<a href="login.php">Login</a>';
                     ?>
 
                 </li>
                 <li>
-                    <a href="register.php">Register</a>
+                <?php if (!( is_logged_in() )) echo '<a href="register.php">Register</a>'
+                    ?>
                 </li>
             </ul>
         </div>

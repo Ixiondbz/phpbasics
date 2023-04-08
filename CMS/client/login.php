@@ -3,6 +3,10 @@
 connect_to_db();
 ?>
 <?php
+if(is_logged_in())
+{
+    redirect('index.php');
+}
 if (is_method('post')) {
     if (isset($_POST['email_or_phone']) && isset($_POST['password'])) {
         login_user($_POST['email_or_phone'], $_POST['password']);
@@ -38,20 +42,20 @@ if (is_method('post')) {
                                 <div class="panel-body">
 
 
-                                    <form id="login-form" role="form" autocomplete="off" class="form" method="post">
+                                    <form id="login-form" role="form" autocomplete="on" class="form" method="post">
 
                                         <div class="form-group">
                                             <div class="input-group">
                                                 <span class="input-group-addon"><i class="glyphicon glyphicon-user color-blue"></i></span>
 
-                                                <input autocomplete=off name="email_or_phone" type="text" class="form-control" placeholder="Enter your Phone/Email">
+                                                <input autocomplete=on name="email_or_phone" type="text" class="form-control" placeholder="Enter your Phone/Email">
                                             </div>
                                         </div>
 
                                         <div class="form-group">
                                             <div class="input-group">
                                                 <span class="input-group-addon"><i class="glyphicon glyphicon-lock color-blue"></i></span>
-                                                <input autocomplete=off name="password" type="password" class="form-control" placeholder="Enter Password">
+                                                <input autocomplete=on name="password" type="password" class="form-control" placeholder="Enter Password">
                                             </div>
                                         </div>
 

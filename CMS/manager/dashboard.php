@@ -31,12 +31,16 @@ include "includes/header.php";
 
                                     <?php
 
-                                    $query = queryline("SELECT * FROM `tuition request`");
-                                    $result = mysqli_query($connection, $query);
+                                    $query = queryline("SELECT COUNT(*) FROM `tuition request`");
+                                    $statement = mysqli_prepare($connection, $query);
+                                    mysqli_stmt_execute($statement);
+                                    $result = mysqli_stmt_get_result($statement);
                                     if (!$result) {
                                         die("Query Failed" . mysqli_error($connection));
                                     } else {
-                                        echo mysqli_num_rows($result);
+                                        while ($row = mysqli_fetch_assoc($result)) {
+                                            echo $row['COUNT(*)'];
+                                        }
                                     }
                                     ?>
 
@@ -68,7 +72,17 @@ include "includes/header.php";
                                     <?php
 
 
-                                    echo 0;
+                                    $query = queryline("SELECT COUNT(*) FROM user");
+                                    $statement = mysqli_prepare($connection, $query);
+                                    mysqli_stmt_execute($statement);
+                                    $result = mysqli_stmt_get_result($statement);
+                                    if (!$result) {
+                                        die("Query Failed" . mysqli_error($connection));
+                                    } else {
+                                        while ($row = mysqli_fetch_assoc($result)) {
+                                            echo $row['COUNT(*)'];
+                                        }
+                                    }
 
                                     ?>
 
