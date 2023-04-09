@@ -1,7 +1,6 @@
-<?php include "../includes/functions.php"; ?>
-<?php
-connect_to_db();
-?>
+<?php include "includes/base.php"; ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 

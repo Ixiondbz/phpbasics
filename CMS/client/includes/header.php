@@ -1,5 +1,5 @@
 <head>
-    <title>Homepage</title>
+    <title></title>
     <!-- Bootstrap Core CSS -->
     <link href="../css/bootstrap.min.css" rel="stylesheet">
 

@@ -20,15 +20,17 @@
                     <a href="tuition list.php">Tuition list</a>
                 </li>
                 <li>
-                    <?php if (is_logged_in()) echo '<a href="logout.php">Logout</a>' ;
-                        else echo '<a href="login.php">Login</a>';
+                    <?php if (is_logged_in()) echo '<a href="logout.php">Logout</a>';
+                    else echo '<a href="login.php">Login</a>';
                     ?>
 
                 </li>
                 <li>
-                <?php if (!( is_logged_in() )) echo '<a href="register.php">Register</a>'
+                    <?php if (!(is_logged_in())) echo '<a href="register.php">Register</a>'
                     ?>
                 </li>
+                <li><?php if (is_logged_in()) echo '<a href="profile.php">Profile</a>';
+                    ?></li>
             </ul>
         </div>
         <!-- /.navbar-collapse -->

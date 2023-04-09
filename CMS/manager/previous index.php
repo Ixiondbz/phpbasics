@@ -1,4 +1,5 @@
-<?php include "../includes/functions.php"; ?>
+<?php include "includes/base.php"; ?>
+
 
 <!DOCTYPE html>
 <html>

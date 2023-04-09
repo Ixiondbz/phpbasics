@@ -26,8 +26,7 @@ function read_tuition_requests()
 {
     global $connection;
     // GET INFO FROM DATABASE
-    $query = queryline("SELECT * 
-FROM `tuition request`");
+    $query = queryline("SELECT * FROM `tuition request`");
 
     $result = mysqli_query($connection, $query);
 
@@ -75,8 +74,8 @@ function read_tuition_requests_without_id()
     global $connection;
     // GET INFO FROM DATABASE
     $query = queryline("SELECT `parent name`, `student name`, `student class`, `student subjects`, 
-`teaching location`, `additional notes` 
-FROM `tuition request`");
+    `teaching location`, `additional notes` 
+    FROM `tuition request`");
 
     $result = mysqli_query($connection, $query);
 
@@ -109,6 +108,10 @@ FROM `tuition request`");
 
 function update_tuition_requests()
 {
+    /* This function receives the post request of the selected id(row in the table)
+        and updates it in the db table
+    */
+
     global $connection;
     // UPDATE QUERY
     if (isset($_POST['update'])) {
@@ -138,9 +141,45 @@ function update_tuition_requests()
         }
     }
 }
+function update_profile()
+{
+    global $connection;
+    global $email, $phone;
+    if (is_method('post') and isset($_POST['update'])) {
+        $user_full_name = $_POST['user_full_name'];
+        $user_type = $_POST['user_type'];
+        $user_email = $_POST['user_email'];
+        $user_phone = $_POST['user_phone'];
+        $user_image = $_POST['user_image'];
 
+
+        $query = queryline("UPDATE user ");
+        $query .= queryline("SET user_full_name = ?, user_type = ?, user_email = ?, user_phone = ?, user_image = ? WHERE user_phone='{$phone}' OR user_email='{$email}'");
+        // $query .= queryline("");
+        $statement = mysqli_prepare($connection, $query);
+        mysqli_stmt_bind_param(
+            $statement,
+            'sssss',
+            $user_full_name,
+            $user_type,
+            $user_email,
+            $user_phone,
+            $user_image,
+
+        );
+        mysqli_stmt_execute($statement);
+
+        if (!mysqli_stmt_affected_rows($statement) === 0) {
+            die("QUERY FAILED" . mysqli_error($connection));
+        }
+
+        echo "Saved 😊";
+        redirect('profile.php');
+    }
+}
 function edit_tuition_requests()
 {
+    /* This function generates a form of text boxes prefilled with the information of the selected id(row in the table)*/
     global $connection;
     // EDIT QUERY
     if (isset($_GET['edit'])) {
@@ -158,17 +197,6 @@ function edit_tuition_requests()
             $teaching_location = $row['teaching location'];
             $additional_notes = $row['additional notes'];
         ?>
-
-            <!-- <table class="table table-bordered table-hover">
-                <tr>
-                    <td>parent anme</td>
-                    <td>student name</td>
-                    <td>class</td>
-                    <td>subjects</td>
-                    <td>location</td>
-                    <td>additional notes</td>
-                </tr>
-            </table> -->
 
             <form action="tuition requests.php" method="post">
 
@@ -206,7 +234,162 @@ function edit_tuition_requests()
 
             </form>
 
+        <?php
+        }
+    }
+}
+function read_clients()
+{
+    // Read all rows from 'user' table such that it doesn't have 'manager' as its user_type
+    global $connection;
+
+    $query = queryline("DESC user");
+    $statement = mysqli_prepare($connection, $query);
+    mysqli_stmt_execute($statement);
+    $result = mysqli_stmt_get_result($statement);
+    echo "<tr>";
+    while ($row = mysqli_fetch_assoc($result)) {
+        if ($row['Field'] !== 'user_password') {
+            echo "<th>";
+            echo $row['Field'];
+            echo "</th>";
+        }
+    }
+    // echo "<th>";
+    // echo "CRUD actions";
+    // echo "</th>";
+    echo "</tr>";
+
+
+    $excluded_user_type = 'manager';
+    $query = queryline("SELECT * FROM user");
+    $query .= queryline("WHERE user_type != ? ");
+    $statement = mysqli_prepare($connection, $query);
+    mysqli_stmt_bind_param($statement, 's', $excluded_user_type);
+    mysqli_stmt_execute($statement);
+    $result = mysqli_stmt_get_result($statement);
+    // mysqli_stmt_bind_result($statement, $user_id,$user_full_name,$user_type);
+    // mysqli_stmt_fetch($statement);
+
+
+    while ($row = mysqli_fetch_assoc($result)) {
+        $user_id = $row['user_id'];
+        echo "<tr>";
+        foreach ($row as $key => $value) {
+            if ($key !== 'user_password') {
+                echo "<td>" . $value . "</td>";
+            }
+        }
+        echo "<td>
+                 <a href='clients.php?delete={$user_id}'>Delete</a>
+                 </td>";
+        echo "<td>
+                 <a href='clients.php?edit={$user_id}'>Edit</a>
+                 </td>";
+
+        echo "</tr>";
+    }
+}
+
+function delete_clients()
+{
+    global $connection;
+    // DELETE QUERY
+    if (isset($_GET['delete'])) {
+        $delete_id = $_GET['delete'];
+        $query = queryline("DELETE FROM `user` WHERE id={$delete_id}");
+        $delete_query = mysqli_query($connection, $query);
+        echo "Deleted successfully";
+        header("Location: clients.php");
+    }
+}
+
+function edit_clients()
+{
+    /* This function generates a form of text boxes prefilled with the information of the selected id(row in the table)*/
+    global $connection;
+    // EDIT QUERY
+    if (isset($_GET['edit'])) {
+        $edit_id = $_GET['edit'];
+        $query = queryline("SELECT * FROM `user` WHERE user_id={$edit_id}");
+        $tuition_request = mysqli_query($connection, $query);
+
+        // GENERATE TEXT BOXES SHOWING INFO OF THE SELECTED ROW
+        while ($row = mysqli_fetch_assoc($tuition_request)) {
+            $user_id = $row['user_id'];
+            $user_full_name = $row['user_full_name'];
+            $user_email = $row['user_email'];
+            $user_phone = $row['user_phone'];
+            $user_type = $row['user_type'];
+            $user_image = $row['user_image'];
+        ?>
+
+            <form action="clients.php" method="post">
+
+                <input type="hidden" name="user_id" value="<?php if (isset($user_id)) {
+                                                                echo $user_id;
+                                                            } ?>" />
+
+
+                <input value="<?php if (isset($user_full_name)) {
+                                    echo $user_full_name;
+                                } ?>" type="text" name="user_full_name" id="">
+
+                <input value="<?php if (isset($user_email)) {
+                                    echo $user_email;
+                                } ?>" type="text" name="user_email" id="">
+
+                <input value="<?php if (isset($user_phone)) {
+                                    echo $user_phone;
+                                } ?>" type="text" name="user_phone" id="">
+
+                <input value="<?php if (isset($user_type)) {
+                                    echo $user_type;
+                                } ?>" type="text" name="user_type" id="">
+
+                <input value="<?php if (isset($user_image)) {
+                                    echo $user_image;
+                                } ?>" type="text" name="user_image" id="">
+
+                <input type="submit" name="update" value="update">
+
+            </form>
+
             <?php
+        }
+    }
+}
+
+function update_clients()
+{
+    /* This function receives the post request of the selected id(row in the table)
+        and updates it in the db table
+    */
+
+    global $connection;
+    // UPDATE QUERY
+    if (isset($_POST['update'])) {
+        $user_id = $_POST['user_id'];
+        $user_full_name = $_POST['user_full_name'];
+        $user_email = $_POST['user_email'];
+        $user_phone = $_POST['user_phone'];
+        $user_type = $_POST['user_type'];
+        $user_image = $_POST['user_image'];
+
+
+        $query = queryline("UPDATE `user` 
+        SET `user_full_name`='{$user_full_name}', `user_email`='{$user_email}',
+        `user_phone`='{$user_phone}', `user_type`='{$user_type}',
+        `user_image`='{$user_image}'
+        WHERE user_id={$user_id} ");
+
+        $update_query = mysqli_query($connection, $query);
+
+        if (!$update_query) {
+            die("QUERY FAILED");
+        } else {
+            echo "Query successful 😄";
+            header("Location: clients.php");
         }
     }
 }
@@ -383,8 +566,11 @@ function register_user($email_or_phone, $password)
 }
 
 function is_logged_in()
-{   
+{
     return (isset($_SESSION['user_email']) or isset($_SESSION['user_phone']));
-}   
-
+}
+function is_manager()
+{
+    return is_logged_in() and ($_SESSION['user_type'] === 'manager');
+}
 ?>

@@ -12,8 +12,8 @@
     </div>
     <!-- Top Menu Items -->
     <ul class="nav navbar-right top-nav">
-        <li><a href="../client/homepage.php">Client Home</a></li>
-        <li class="dropdown">
+        <li><a href="../client/index.php">Client Home</a></li>
+        <!-- <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-envelope"></i> <b
                     class="caret"></b></a>
             <ul class="dropdown-menu message-dropdown">
@@ -72,8 +72,8 @@
                     <a href="#">Read All New Messages</a>
                 </li>
             </ul>
-        </li>
-        <li class="dropdown">
+        </li> -->
+        <!-- <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell"></i> <b
                     class="caret"></b></a>
             <ul class="dropdown-menu alert-dropdown">
@@ -100,9 +100,9 @@
                     <a href="#">View All</a>
                 </li>
             </ul>
-        </li>
+        </li> -->
         <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> Raisul <b
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> <?php echo $_SESSION['user_full_name']; ?> <b
                     class="caret"></b></a>
             <ul class="dropdown-menu">
                 <li>

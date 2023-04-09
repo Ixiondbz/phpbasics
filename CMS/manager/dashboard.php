@@ -1,7 +1,6 @@
-<?php include "../includes/functions.php"; ?>
-<?php
-connect_to_db();
-?>
+<?php include "includes/base.php"; ?>
+
+
 <!DOCTYPE html>
 <html>
 
@@ -70,10 +69,12 @@ include "includes/header.php";
                                 <div class="col-xs-9 text-right">
 
                                     <?php
-
+                                    $excluded_user_type = 'manager';
 
                                     $query = queryline("SELECT COUNT(*) FROM user");
+                                    $query .= queryline("WHERE user_type != ? ");
                                     $statement = mysqli_prepare($connection, $query);
+                                    mysqli_stmt_bind_param($statement, 's', $excluded_user_type);
                                     mysqli_stmt_execute($statement);
                                     $result = mysqli_stmt_get_result($statement);
                                     if (!$result) {

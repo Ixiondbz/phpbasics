@@ -1,7 +1,6 @@
-<?php include "../includes/functions.php"; ?>
-<?php
-connect_to_db();
-?>
+<?php include "includes/base.php"; ?>
+
+
 <!DOCTYPE html>
 <html>
 
@@ -28,7 +27,6 @@ include "includes/header.php";
                                 <th>subjects</th>
                                 <th>location</th>
                                 <th>additional notes</th>
-                                <th>CRUD actions</th>
                             </tr>
 
                             <?php
