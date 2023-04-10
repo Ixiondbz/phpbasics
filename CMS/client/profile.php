@@ -77,7 +77,12 @@ if (is_logged_in()) {
 
                         <div class="form-group">
                             <label for="post_content">Image</label>
-                            <input name="user_image" class="form-control" type="text" value="<?php echo $user_image; ?>">
+                            <img width="100" src="../images/<?php
+                                                    if (isset($user_image)) {
+                                                        echo $user_image;
+                                                    }
+                                                    ?>" alt="">
+                            <input name="user_image" class="form-control" type="file" value="<?php echo $user_image; ?>">
                         </div>
 
                         <div class="form-group">

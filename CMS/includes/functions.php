@@ -249,7 +249,9 @@ function read_clients()
     $result = mysqli_stmt_get_result($statement);
     echo "<tr>";
     while ($row = mysqli_fetch_assoc($result)) {
-        if ($row['Field'] !== 'user_password') {
+        if ($row['Field'] === 'user_password') {
+            continue;
+        } else {
             echo "<th>";
             echo $row['Field'];
             echo "</th>";
@@ -276,7 +278,11 @@ function read_clients()
         $user_id = $row['user_id'];
         echo "<tr>";
         foreach ($row as $key => $value) {
-            if ($key !== 'user_password') {
+            if ($key === 'user_password') {
+                continue;
+            } else if ($key === 'user_image') {
+                echo "<td><img width='40' src='../images/$value' alt='image'></td>";
+            } else {
                 echo "<td>" . $value . "</td>";
             }
         }
@@ -324,32 +330,60 @@ function edit_clients()
             $user_image = $row['user_image'];
         ?>
 
-            <form action="clients.php" method="post">
+            <form action="clients.php" method="post" enctype="multipart/form-data">
 
                 <input type="hidden" name="user_id" value="<?php if (isset($user_id)) {
                                                                 echo $user_id;
                                                             } ?>" />
 
 
-                <input value="<?php if (isset($user_full_name)) {
-                                    echo $user_full_name;
-                                } ?>" type="text" name="user_full_name" id="">
 
-                <input value="<?php if (isset($user_email)) {
-                                    echo $user_email;
-                                } ?>" type="text" name="user_email" id="">
 
-                <input value="<?php if (isset($user_phone)) {
-                                    echo $user_phone;
-                                } ?>" type="text" name="user_phone" id="">
+                <div class="form-group">
+                    <label for="">Name</label>
+                    <input value="<?php if (isset($user_full_name)) {
+                                        echo $user_full_name;
+                                    } ?>" type="text" name="user_full_name" id="">
+                </div>
+                <div class="form-group">
+                    <label for="">Email</label>
 
-                <input value="<?php if (isset($user_type)) {
-                                    echo $user_type;
-                                } ?>" type="text" name="user_type" id="">
+                    <input value="<?php if (isset($user_email)) {
+                                        echo $user_email;
+                                    } ?>" type="text" name="user_email" id="">
+                </div>
+                <!-- <div class="form-group">
+</div> -->
 
-                <input value="<?php if (isset($user_image)) {
-                                    echo $user_image;
-                                } ?>" type="text" name="user_image" id="">
+                <div class="form-group">
+                    <label for="">Phone</label>
+
+                    <input value="<?php if (isset($user_phone)) {
+                                        echo $user_phone;
+                                    } ?>" type="text" name="user_phone" id="">
+                </div>
+
+
+
+
+                <div class="form-group">
+                    <label for="">Type</label>
+
+                    <input value="<?php if (isset($user_type)) {
+                                        echo $user_type;
+                                    } ?>" type="text" name="user_type" id="">
+                </div>
+
+                <div class="form-group">
+                <label for="">Image</label>
+
+                    <img width="100" src="../images/<?php
+                                                    if (isset($user_image)) {
+                                                        echo $user_image;
+                                                    }
+                                                    ?>" alt="">
+                    <input type="file" name="image">
+                </div>
 
                 <input type="submit" name="update" value="update">
 
@@ -374,8 +408,16 @@ function update_clients()
         $user_email = $_POST['user_email'];
         $user_phone = $_POST['user_phone'];
         $user_type = $_POST['user_type'];
-        $user_image = $_POST['user_image'];
 
+        $user_image = $_FILES['image']['name'];
+        $user_image_temp = $_FILES['image']['tmp_name'];
+
+        move_uploaded_file($user_image_temp, "../images/$user_image");
+
+        if (empty($user_image)) {
+            $query = queryline("SELECT user_image FROM user WHERE user_id=$user_id");
+            $user_image = mysqli_query($connection, $query);
+        }
 
         $query = queryline("UPDATE `user` 
         SET `user_full_name`='{$user_full_name}', `user_email`='{$user_email}',
