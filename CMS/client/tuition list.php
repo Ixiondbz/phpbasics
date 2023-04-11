@@ -21,18 +21,21 @@ connect_to_db();
                 <div class="container-fluid">
                     <div class="col-xs-13">
                         <table class="table table-bordered table-hover">
-                            <tr>
-                                <th>parent name</th>
-                                <th>student name</th>
-                                <th>class</th>
-                                <th>subjects</th>
-                                <th>location</th>
-                                <th>additional notes</th>
-                            </tr>
+                            <!-- <tr>
+                                <th>Class</th>
+                                <th>Subjects</th>
+                                <th>Location</th>
+                                <th>Additional notes</th>
+                            </tr> -->
 
-                            <?php
-                            read_tuition_requests_without_id();
-                            ?>
+                            <div class="container">
+                                <div class="row">
+                                    <?php
+                                    read_tuition_requests_with_id();
+                                    ?>
+                                </div>
+
+                            </div>
 
 
                         </table>

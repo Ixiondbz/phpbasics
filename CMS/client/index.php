@@ -19,7 +19,7 @@ connect_to_db();
         <div class="row">
 
             <!-- Tuition Entries Column -->
-            <div class="col-md-8">
+            <div class=" ">
 
                 <h1 class="page-header">
                     Welcome <?php if (isset($_SESSION['user_email']) or isset($_SESSION['user_phone'])) {
@@ -44,7 +44,7 @@ connect_to_db();
             </div>
 
             <!-- Tuition Sidebar Widgets Column -->
-            <div class="col-md-4">
+            <div class=" ">
 
                 <!-- Tuition Search Well -->
                 <div class="well">

@@ -13,35 +13,53 @@ connect_to_db();
 
 
 <body>
-<?php include "includes/navigation.php"; ?>
-  
+    <?php include "includes/navigation.php"; ?>
+
     <!-- Page Content -->
     <div class="container">
 
         <div class="row">
 
+            <!-- Tuition Sidebar Widgets Column -->
+            <div class=" ">
+
+                <!-- Tuition Search Well -->
+                <div class="well">
+                    <h4>Tuition Search</h4>
+                    <!-- <p>Search for tuitions near you 😊</p> -->
+
+                    <form action="tuition search.php" method="post">
+                        <div class="input-group">
+                            <input class="form-control" type="search" name="search" id="" placeholder="search by locations">
+                            <span class="input-group-btn">
+                                <button name="submit" class="btn btn-default" type="submit">
+                                    <span class="glyphicon glyphicon-search"></span>
+                                </button>
+                            </span>
+                        </div>
+                    </form>
+
+                    <!-- /.input-group -->
+                </div>
+
+
+
+            </div>
             <!-- Tuition Entries Column -->
-            <div class="col-md-8">
+            <div class=" ">
 
                 <h1 class="page-header">
                     <small></small>
                 </h1>
 
-                <table class="table table-bordered table-hover">
-                    <tr>
-                        <th>parent name</th>
-                        <th>student name</th>
-                        <th>class</th>
-                        <th>subjects</th>
-                        <th>location</th>
-                        <th>additional notes</th>
-                    </tr>
-                    <?php
+                <div class="container">
+                    <div class="row">
+                        <?php
+                        search_tuitions_by_location();
+                        ?>
+                    </div>
 
-                    search_tuitions_by_location();
-
-                    ?>
-                </table>
+                </div>
 
                 <!-- Pager -->
                 <ul class="pager">
@@ -55,87 +73,13 @@ connect_to_db();
 
             </div>
 
-            <!-- Tuition Sidebar Widgets Column -->
-            <div class="col-md-4">
 
-                <!-- Tuition Search Well -->
-                <div class="well">
-                    <h4>Tuition Search</h4>
-                    <p>Search for tuitions near you 😊</p>
-
-                    <form action="tuition search.php" method="post">
-                        <div class="input-group">
-                            <input class="form-control" type="search" name="search" id=""
-                                placeholder="search by locations">
-                            <span class="input-group-btn">
-                                <button name="submit" class="btn btn-default" type="submit">
-                                    <span class="glyphicon glyphicon-search"></span>
-                                </button>
-                            </span>
-                        </div>
-                    </form>
-
-                    <!-- /.input-group -->
-                </div>
-
-                <!-- Tuition Categories Well -->
-                <div class="well">
-                    <h4>Tuition Categories</h4>
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <ul class="list-unstyled">
-                                <li><a href="#">Category Name</a>
-                                </li>
-                                <li><a href="#">Category Name</a>
-                                </li>
-                                <li><a href="#">Category Name</a>
-                                </li>
-                                <li><a href="#">Category Name</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <!-- /.col-lg-6 -->
-                        <div class="col-lg-6">
-                            <ul class="list-unstyled">
-                                <li><a href="#">Category Name</a>
-                                </li>
-                                <li><a href="#">Category Name</a>
-                                </li>
-                                <li><a href="#">Category Name</a>
-                                </li>
-                                <li><a href="#">Category Name</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <!-- /.col-lg-6 -->
-                    </div>
-                    <!-- /.row -->
-                </div>
-
-                <!-- Side Widget Well -->
-                <div class="well">
-                    <h4>Side Widget Well</h4>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore, perspiciatis adipisci
-                        accusamus laudantium odit aliquam repellat tempore quos aspernatur vero.</p>
-                </div>
-
-            </div>
 
         </div>
         <!-- /.row -->
 
         <hr>
 
-        <!-- Footer -->
-        <footer>
-            <div class="row">
-                <div class="col-lg-12">
-                    <p>Copyright &copy; Your Website 2014</p>
-                </div>
-                <!-- /.col-lg-12 -->
-            </div>
-            <!-- /.row -->
-        </footer>
 
     </div>
     <!-- /.container -->

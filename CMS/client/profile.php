@@ -21,9 +21,9 @@ if (is_logged_in()) {
     }
     mysqli_stmt_close($statement);
 
-    global $email,$phone;
-    $email=$user_email;
-    $phone=$user_phone;
+    global $email, $phone;
+    $email = $user_email;
+    $phone = $user_phone;
     update_profile();
 } else
     redirect('index.php');
@@ -53,7 +53,7 @@ if (is_logged_in()) {
 
                 <!-- Tuition Search Well -->
                 <div class="well">
-                    <form action="profile.php" method="post">
+                    <form action="profile.php" method="post" enctype="multipart/form-data">
 
                         <div class="form-group">
                             <label for="post_content">Name</label>
@@ -62,7 +62,24 @@ if (is_logged_in()) {
 
                         <div class="form-group">
                             <label for="post_content">Type</label>
-                            <input name="user_type" class="form-control" type="text" value="<?php echo $user_type; ?>">
+                            <select name="user_type" id="">
+                                <?php
+                                $d_query = queryline("SELECT * FROM `user type`");
+                                $user_types = mysqli_query($connection,$d_query);
+                                if (isset($user_type))
+                            echo "<option selected'>{$user_type}</option>";
+                                while($row = mysqli_fetch_assoc($user_types))
+                                {
+                                    $user_type_id = $row['id'];
+                                    $user_type_name = $row['type_name'];
+
+                                    if ($user_type !== $user_type_name)
+                                    echo "<option value='$user_type_name'>{$user_type_name}</option>";
+                                }
+                                
+                                ?>
+
+                            </select>
                         </div>
 
                         <div class="form-group">
@@ -78,11 +95,11 @@ if (is_logged_in()) {
                         <div class="form-group">
                             <label for="post_content">Image</label>
                             <img width="100" src="../images/<?php
-                                                    if (isset($user_image)) {
-                                                        echo $user_image;
-                                                    }
-                                                    ?>" alt="">
-                            <input name="user_image" class="form-control" type="file" value="<?php echo $user_image; ?>">
+                                                            if (isset($user_image)) {
+                                                                echo $user_image;
+                                                            }
+                                                            ?>" alt="">
+                            <input name="image" class="form-control" type="file" value="<?php echo $user_image; ?>">
                         </div>
 
                         <div class="form-group">

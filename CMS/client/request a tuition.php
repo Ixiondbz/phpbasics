@@ -5,12 +5,12 @@ connect_to_db();
 
 
 if (isset($_POST["submit"])) {
-    $parent_name = $_POST['parent_name'];
-    $student_name = $_POST['student_name'];
-    $student_class = $_POST['student_class'];
-    $student_subjects = $_POST['student_subjects'];
-    $teaching_location = $_POST['teaching_location'];
-    $additional_notes = $_POST['additional_notes'];
+    $parent_name = mysqli_real_escape_string($connection,$_POST['parent_name']);  
+    $student_name = mysqli_real_escape_string($connection,$_POST['student_name']);
+    $student_class = mysqli_real_escape_string($connection,$_POST['student_class']);
+    $student_subjects = mysqli_real_escape_string($connection,$_POST['student_subjects']);
+    $teaching_location = mysqli_real_escape_string($connection,$_POST['teaching_location']);
+    $additional_notes = mysqli_real_escape_string($connection,$_POST['additional_notes']);
 
 
     // SAVE INFO TO DATABASE

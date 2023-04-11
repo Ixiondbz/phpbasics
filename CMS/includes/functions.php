@@ -22,6 +22,7 @@ function echobr($string_var)
     echo "<br>";
 }
 
+/* this is more manager page */
 function read_tuition_requests()
 {
     global $connection;
@@ -68,13 +69,12 @@ function read_tuition_requests()
         }
     }
 }
-
-function read_tuition_requests_without_id()
+function read_tuition_requests_with_id()
 {
     global $connection;
     // GET INFO FROM DATABASE
-    $query = queryline("SELECT `parent name`, `student name`, `student class`, `student subjects`, 
-    `teaching location`, `additional notes` 
+    $query = queryline("SELECT `id`,`student class`, `student subjects`, 
+    `teaching location` 
     FROM `tuition request`");
 
     $result = mysqli_query($connection, $query);
@@ -85,27 +85,85 @@ function read_tuition_requests_without_id()
         while ($row = mysqli_fetch_assoc($result)) {
 
         ?>
-            <tr>
-                <?php
-                foreach ($row as $key => $value) {
-                ?>
-                    <td>
-                        <?php
-                        echo $value;
-                        ?>
-                    </td>
-                <?php
-                }
 
-                ?>
-            </tr>
+            <?php
+
+            ?>
+
+
+            <div class="col-md-6">
+                <div class="card" style="border: 0.5px dotted; padding-bottom:5px ;">
+                    <div class="card-body">
+                        <h5 class="card-title">Tutor needed for</h5>
+                        <h6 class="card-subtitle mb-2 text-muted"><?php echo $row['student class'] . ", " . $row['teaching location']; ?></h6>
+                        <p class="card-text"> <?php echo "Subjects: " . $row['student subjects']; ?> </p>
+                        <a href="tuition info.php?edit=<?php echo $row['id'];?>" class="card-link">See more details..</a>
+
+                    </div>
+                </div>
+            </div>
+            <?php
+
+
+            ?>
+
 
 
         <?php
         }
     }
 }
+function read_tuition_requests_without_id()
+{
+    global $connection;
+    // GET INFO FROM DATABASE
+    $query = queryline("SELECT `student class`, `student subjects`, 
+    `teaching location` 
+    FROM `tuition request`");
 
+    $result = mysqli_query($connection, $query);
+
+    if (!$result) {
+        die("Query Failed" . mysqli_error($connection));
+    } else {
+        while ($row = mysqli_fetch_assoc($result)) {
+
+        ?>
+
+            <?php
+
+            ?>
+
+
+            <div class="col-md-6">
+                <div class="card" style="border: 0.5px dotted; padding-bottom:5px ;">
+                    <div class="card-body">
+                        <h5 class="card-title">Tutor needed for</h5>
+                        <h6 class="card-subtitle mb-2 text-muted"><?php echo $row['student class'] . ", " . $row['teaching location']; ?></h6>
+                        <p class="card-text"> <?php echo "Subjects: " . $row['student subjects']; ?> </p>
+                        <a href="tuition info.php?edit=<?php echo $row['asd'];?>" class="card-link">See more details..</a>
+
+                    </div>
+                </div>
+            </div>
+            <?php
+
+
+            ?>
+
+
+
+        <?php
+        }
+    }
+}
+function escape_special_characters($string_with_special_characters)
+{
+    global $connection;
+
+    $string_without_special_characters = mysqli_real_escape_string($connection,$string_with_special_characters);
+    return $string_without_special_characters;
+}
 function update_tuition_requests()
 {
     /* This function receives the post request of the selected id(row in the table)
@@ -115,14 +173,14 @@ function update_tuition_requests()
     global $connection;
     // UPDATE QUERY
     if (isset($_POST['update'])) {
-        $edit_id = $_POST['edit_id'];
+        $edit_id = escape_special_characters($_POST['edit_id']);
 
-        $parent_name = $_POST['parent_name'];
-        $student_name = $_POST['student_name'];
-        $student_class = $_POST['student_class'];
-        $student_subjects = $_POST['student_subjects'];
-        $teaching_location = $_POST['teaching_location'];
-        $additional_notes = $_POST['additional_notes'];
+        $parent_name = escape_special_characters($_POST['parent_name']);
+        $student_name = escape_special_characters($_POST['student_name']);
+        $student_class = escape_special_characters($_POST['student_class']);
+        $student_subjects = escape_special_characters($_POST['student_subjects']);
+        $teaching_location = escape_special_characters($_POST['teaching_location']);
+        $additional_notes = escape_special_characters($_POST['additional_notes']);
 
 
         $query = queryline("UPDATE `tuition request` 
@@ -136,26 +194,89 @@ function update_tuition_requests()
         if (!$update_query) {
             die("QUERY FAILED");
         } else {
-            echo "Query successful 😄";
-            header("Location: tuition requests.php");
+            // echo "Query successful 😄";
+            echo "Updated 😄. <a href='tuition requests.php'>Reload</a>";
+            // redirect('tuition requests.php');
         }
     }
 }
+function update_clients()
+{
+    /* This function receives the post request of the selected id(row in the table)
+        and updates it in the db table
+    */
+
+    global $connection;
+    // UPDATE QUERY
+    if (isset($_POST['update'])) {
+        $user_id = escape_special_characters($_POST['user_id']);
+        $user_full_name = escape_special_characters($_POST['user_full_name']);
+        $user_email = escape_special_characters($_POST['user_email']);
+        $user_phone = escape_special_characters($_POST['user_phone']);
+        $user_type = escape_special_characters($_POST['user_type']);
+
+        $user_image = $_FILES['image']['name'];
+        $user_image_temp = $_FILES['image']['tmp_name'];
+
+        move_uploaded_file($user_image_temp, "../images/$user_image");
+
+        if (empty($user_image)) {
+            $query = queryline("SELECT user_image FROM user WHERE user_id=$user_id");
+            $user_image = mysqli_query($connection, $query);
+            $row = mysqli_fetch_row($user_image);
+            $user_image = $row[0];
+        }
+
+        $query = queryline("UPDATE `user` 
+        SET `user_full_name`='{$user_full_name}', `user_email`='{$user_email}',
+        `user_phone`='{$user_phone}', `user_type`='{$user_type}',
+        `user_image`='{$user_image}'
+        WHERE user_id={$user_id} ");
+
+        $update_query = mysqli_query($connection, $query);
+
+        if (!$update_query) {
+            die("QUERY FAILED");
+        } else {
+            echo "Query successful 😄";
+            header("Location: clients.php");
+        }
+    }
+}
+
+function get_tuition_info()
+{
+
+}
+
 function update_profile()
 {
     global $connection;
     global $email, $phone;
-    if (is_method('post') and isset($_POST['update'])) {
-        $user_full_name = $_POST['user_full_name'];
-        $user_type = $_POST['user_type'];
-        $user_email = $_POST['user_email'];
-        $user_phone = $_POST['user_phone'];
-        $user_image = $_POST['user_image'];
+    if (isset($_POST['update'])) {
+        // echo $email;
+        // echo $phone;
+        $user_full_name = escape_special_characters($_POST['user_full_name']);
+        $user_type = escape_special_characters($_POST['user_type']);
+        $user_email = escape_special_characters($_POST['user_email']);
+        $user_phone = escape_special_characters($_POST['user_phone']);
 
+        $user_image = $_FILES['image']['name'];
+        $user_image_temp = $_FILES['image']['tmp_name'];
+
+        move_uploaded_file($user_image_temp, "../images/$user_image");
+
+        if (empty($user_image)) {
+            $query = queryline("SELECT user_image FROM user");
+            $query .= queryline("WHERE user_email='{$email}' OR user_phone='{$phone}'");
+            $user_image_result = mysqli_query($connection, $query);
+            $row = mysqli_fetch_row($user_image_result);
+            $user_image = $row[0];
+        }
 
         $query = queryline("UPDATE user ");
-        $query .= queryline("SET user_full_name = ?, user_type = ?, user_email = ?, user_phone = ?, user_image = ? WHERE user_phone='{$phone}' OR user_email='{$email}'");
-        // $query .= queryline("");
+        $query .= queryline("SET user_full_name = ?, user_type = ?, user_email = ?, user_phone = ?, user_image = ?");
+        $query .= queryline("WHERE user_phone='{$phone}' OR user_email='{$email}'");
         $statement = mysqli_prepare($connection, $query);
         mysqli_stmt_bind_param(
             $statement,
@@ -173,8 +294,8 @@ function update_profile()
             die("QUERY FAILED" . mysqli_error($connection));
         }
 
-        echo "Saved 😊";
-        redirect('profile.php');
+        echo "Saved 😊. <a href='profile.php'>Reload</a>";
+        // redirect('profile.php');
     }
 }
 function edit_tuition_requests()
@@ -257,9 +378,7 @@ function read_clients()
             echo "</th>";
         }
     }
-    // echo "<th>";
-    // echo "CRUD actions";
-    // echo "</th>";
+
     echo "</tr>";
 
 
@@ -270,8 +389,7 @@ function read_clients()
     mysqli_stmt_bind_param($statement, 's', $excluded_user_type);
     mysqli_stmt_execute($statement);
     $result = mysqli_stmt_get_result($statement);
-    // mysqli_stmt_bind_result($statement, $user_id,$user_full_name,$user_type);
-    // mysqli_stmt_fetch($statement);
+
 
 
     while ($row = mysqli_fetch_assoc($result)) {
@@ -368,14 +486,33 @@ function edit_clients()
 
                 <div class="form-group">
                     <label for="">Type</label>
+                    <select name="user_type" id="">
+                        <?php
+                        $d_query = queryline("SELECT * FROM `user type`");
+                        $user_types = mysqli_query($connection, $d_query);
 
-                    <input value="<?php if (isset($user_type)) {
-                                        echo $user_type;
-                                    } ?>" type="text" name="user_type" id="">
+                        // The value returned by the database should be chosen in dropdown menu by default
+                        if (isset($user_type))
+                            echo "<option selected'>{$user_type}</option>";
+                        while ($row = mysqli_fetch_assoc($user_types)) {
+                            $user_type_id = $row['id'];
+                            $user_type_name = $row['type_name'];
+
+                            // if (isset($user_type) and $user_type === $user_type_name)
+                            //     echo "<option selected'>{$user_type}</option>";
+                            // else
+                            if ($user_type !== $user_type_name)
+                                echo "<option value='$user_type_name'>{$user_type_name}</option>";
+                        }
+
+                        ?>
+
+                    </select>
+
                 </div>
 
                 <div class="form-group">
-                <label for="">Image</label>
+                    <label for="">Image</label>
 
                     <img width="100" src="../images/<?php
                                                     if (isset($user_image)) {
@@ -394,47 +531,7 @@ function edit_clients()
     }
 }
 
-function update_clients()
-{
-    /* This function receives the post request of the selected id(row in the table)
-        and updates it in the db table
-    */
 
-    global $connection;
-    // UPDATE QUERY
-    if (isset($_POST['update'])) {
-        $user_id = $_POST['user_id'];
-        $user_full_name = $_POST['user_full_name'];
-        $user_email = $_POST['user_email'];
-        $user_phone = $_POST['user_phone'];
-        $user_type = $_POST['user_type'];
-
-        $user_image = $_FILES['image']['name'];
-        $user_image_temp = $_FILES['image']['tmp_name'];
-
-        move_uploaded_file($user_image_temp, "../images/$user_image");
-
-        if (empty($user_image)) {
-            $query = queryline("SELECT user_image FROM user WHERE user_id=$user_id");
-            $user_image = mysqli_query($connection, $query);
-        }
-
-        $query = queryline("UPDATE `user` 
-        SET `user_full_name`='{$user_full_name}', `user_email`='{$user_email}',
-        `user_phone`='{$user_phone}', `user_type`='{$user_type}',
-        `user_image`='{$user_image}'
-        WHERE user_id={$user_id} ");
-
-        $update_query = mysqli_query($connection, $query);
-
-        if (!$update_query) {
-            die("QUERY FAILED");
-        } else {
-            echo "Query successful 😄";
-            header("Location: clients.php");
-        }
-    }
-}
 
 function delete_tuition_requests()
 {
@@ -454,10 +551,10 @@ function search_tuitions_by_location()
     global $connection;
 
     if (isset($_POST['submit'])) {
-        $search_string = $_POST['search'];
+        $search_string = escape_special_characters($_POST['search']);
 
-        $query = queryline("SELECT `parent name`, `student name`, `student class`, `student subjects`, 
-        `teaching location`, `additional notes` FROM `tuition request`
+        $query = queryline("SELECT `student class`, `student subjects`, 
+        `teaching location` FROM `tuition request`
                            WHERE `teaching location` LIKE '%$search_string%'");
 
         $search_query = mysqli_query($connection, $query);
@@ -478,20 +575,17 @@ function search_tuitions_by_location()
 
 
                 ?>
-                        <tr>
-                            <?php
-                            foreach ($row as $key => $value) {
-                            ?>
-                                <td>
-                                    <?php
-                                    echo $value;
-                                    ?>
-                                </td>
-                            <?php
-                            }
+                        <div class="col-md-6">
+                            <div class="card" style="border: 0.5px dotted; padding-bottom:5px ;">
+                                <div class="card-body">
+                                    <h5 class="card-title">Tutor needed for</h5>
+                                    <h6 class="card-subtitle mb-2 text-muted"><?php echo $row['student class'] . ", " . $row['teaching location']; ?></h6>
+                                    <p class="card-text"> <?php echo "Subjects: " . $row['student subjects']; ?> </p>
+                                    <a href="#" class="card-link">See more details..</a>
 
-                            ?>
-                        </tr>
+                                </div>
+                            </div>
+                        </div>
 
 
                 <?php
