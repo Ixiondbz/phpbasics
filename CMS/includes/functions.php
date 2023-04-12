@@ -97,7 +97,7 @@ function read_tuition_requests_with_id()
                         <h5 class="card-title">Tutor needed for</h5>
                         <h6 class="card-subtitle mb-2 text-muted"><?php echo $row['student class'] . ", " . $row['teaching location']; ?></h6>
                         <p class="card-text"> <?php echo "Subjects: " . $row['student subjects']; ?> </p>
-                        <a href="tuition info.php?edit=<?php echo $row['id'];?>" class="card-link">See more details..</a>
+                        <a href="tuition info.php?edit=<?php echo $row['id']; ?>" class="card-link">See more details..</a>
 
                     </div>
                 </div>
@@ -141,7 +141,7 @@ function read_tuition_requests_without_id()
                         <h5 class="card-title">Tutor needed for</h5>
                         <h6 class="card-subtitle mb-2 text-muted"><?php echo $row['student class'] . ", " . $row['teaching location']; ?></h6>
                         <p class="card-text"> <?php echo "Subjects: " . $row['student subjects']; ?> </p>
-                        <a href="tuition info.php?edit=<?php echo $row['asd'];?>" class="card-link">See more details..</a>
+                        <a href="tuition info.php?edit=<?php echo $row['asd']; ?>" class="card-link">See more details..</a>
 
                     </div>
                 </div>
@@ -161,7 +161,7 @@ function escape_special_characters($string_with_special_characters)
 {
     global $connection;
 
-    $string_without_special_characters = mysqli_real_escape_string($connection,$string_with_special_characters);
+    $string_without_special_characters = mysqli_real_escape_string($connection, $string_with_special_characters);
     return $string_without_special_characters;
 }
 function update_tuition_requests()
@@ -195,7 +195,7 @@ function update_tuition_requests()
             die("QUERY FAILED");
         } else {
             // echo "Query successful 😄";
-            echo "Updated 😄. <a href='tuition requests.php'>Reload</a>";
+            echo "Updated 😄. <a href='../client/tuition info.php?edit=" . $edit_id . "'>View the post</a>";
             // redirect('tuition requests.php');
         }
     }
@@ -246,7 +246,6 @@ function update_clients()
 
 function get_tuition_info()
 {
-
 }
 
 function update_profile()
@@ -553,7 +552,7 @@ function search_tuitions_by_location()
     if (isset($_POST['submit'])) {
         $search_string = escape_special_characters($_POST['search']);
 
-        $query = queryline("SELECT `student class`, `student subjects`, 
+        $query = queryline("SELECT `id`,`student class`, `student subjects`, 
         `teaching location` FROM `tuition request`
                            WHERE `teaching location` LIKE '%$search_string%'");
 
@@ -581,7 +580,7 @@ function search_tuitions_by_location()
                                     <h5 class="card-title">Tutor needed for</h5>
                                     <h6 class="card-subtitle mb-2 text-muted"><?php echo $row['student class'] . ", " . $row['teaching location']; ?></h6>
                                     <p class="card-text"> <?php echo "Subjects: " . $row['student subjects']; ?> </p>
-                                    <a href="#" class="card-link">See more details..</a>
+                                    <a href="tuition info.php?edit=<?php echo $row['id']; ?>" class="card-link">See more details..</a>
 
                                 </div>
                             </div>
