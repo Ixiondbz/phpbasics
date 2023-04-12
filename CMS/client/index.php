@@ -3,7 +3,6 @@
 connect_to_db();
 ?>
 <?php
-
 ?>
 <!DOCTYPE html>
 <html>
@@ -65,7 +64,7 @@ connect_to_db();
                     <!-- /.input-group -->
                 </div>
 
-                
+
 
 
 

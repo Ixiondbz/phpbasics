@@ -113,6 +113,17 @@ function read_tuition_requests_with_id()
         }
     }
 }
+function get_count_of_records_in_a_table($table)
+{
+    global $connection;
+    $query = queryline("SELECT COUNT(*) FROM `{$table}`");
+    $result = mysqli_query($connection, $query);
+
+    while ($row = mysqli_fetch_assoc($result)) {
+        $count_of_records_in_the_table = $row['COUNT(*)'];
+    }
+    return $count_of_records_in_the_table;
+}
 function read_tuition_requests_without_id()
 {
     global $connection;
@@ -142,6 +153,51 @@ function read_tuition_requests_without_id()
                         <h6 class="card-subtitle mb-2 text-muted"><?php echo $row['student class'] . ", " . $row['teaching location']; ?></h6>
                         <p class="card-text"> <?php echo "Subjects: " . $row['student subjects']; ?> </p>
                         <a href="tuition info.php?edit=<?php echo $row['asd']; ?>" class="card-link">See more details..</a>
+
+                    </div>
+                </div>
+            </div>
+            <?php
+
+
+            ?>
+
+
+
+        <?php
+        }
+    }
+}
+function read_tuition_requests_with_id_LIMIT($num_of_rows_skipped, $num_of_results)
+{
+    global $connection;
+    // GET INFO FROM DATABASE
+    $query = queryline("SELECT `id`,`student class`, `student subjects`, 
+    `teaching location` 
+    FROM `tuition request`");
+    $query .= queryline("LIMIT $num_of_rows_skipped,$num_of_results");
+
+    $result = mysqli_query($connection, $query);
+
+    if (!$result) {
+        die("Query Failed" . mysqli_error($connection));
+    } else {
+        while ($row = mysqli_fetch_assoc($result)) {
+
+        ?>
+
+            <?php
+
+            ?>
+
+
+            <div class="col-md-6">
+                <div class="card" style="border: 0.5px dotted; padding-bottom:5px ;">
+                    <div class="card-body">
+                        <h5 class="card-title">Tutor needed for</h5>
+                        <h6 class="card-subtitle mb-2 text-muted"><?php echo $row['student class'] . ", " . $row['teaching location']; ?></h6>
+                        <p class="card-text"> <?php echo "Subjects: " . $row['student subjects']; ?> </p>
+                        <a href="tuition info.php?edit=<?php echo $row['id']; ?>" class="card-link">See more details..</a>
 
                     </div>
                 </div>
@@ -593,10 +649,78 @@ function search_tuitions_by_location()
 
                 ?>
 
+            <?php
+            }
+        }
+    }
+}
+
+function search_tuitions_by_location_LIMIT($num_of_rows_skipped, $num_of_results)
+{
+    global $connection;
+
+    if (isset($_POST['submit'])) {
+        $search_string = escape_special_characters($_POST['search']);
+
+        $query = queryline("SELECT `id`,`student class`, `student subjects`, 
+        `teaching location` FROM `tuition request`
+                           WHERE `teaching location` LIKE '%$search_string%'");
+        $query .= queryline("LIMIT $num_of_rows_skipped,$num_of_results");
+
+        $search_query = mysqli_query($connection, $query);
+        if (!$search_query) {
+            die('QUERY FAILED');
+        } else {
+            $count = mysqli_num_rows($search_query);
+            if ($count == 0) {
+                echo "no search results found ☹️";
+            } else {
+            ?>
+                <?php
+                if (!$search_query) {
+                    die("Query Failed" . mysqli_error($connection));
+                } else {
+                    while ($row = mysqli_fetch_assoc($search_query)) {
+
+
+
+                ?>
+                        <div class="col-md-6">
+                            <div class="card" style="border: 0.5px dotted; padding-bottom:5px ;">
+                                <div class="card-body">
+                                    <h5 class="card-title">Tutor needed for</h5>
+                                    <h6 class="card-subtitle mb-2 text-muted"><?php echo $row['student class'] . ", " . $row['teaching location']; ?></h6>
+                                    <p class="card-text"> <?php echo "Subjects: " . $row['student subjects']; ?> </p>
+                                    <a href="tuition info.php?edit=<?php echo $row['id']; ?>" class="card-link">See more details..</a>
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                <?php
+                    }
+                }
+
+                ?>
+
 <?php
             }
         }
     }
+}
+
+function get_count_of_records_in_tuitions_by_location($location)
+{
+    global $connection;
+    $query = queryline("SELECT COUNT(*) FROM `tuition request`");
+    $query .= queryline("WHERE `teaching location` LIKE '%$location%'");
+    $result = mysqli_query($connection, $query);
+
+    while ($row = mysqli_fetch_assoc($result)) {
+        $count_of_records_in_the_table = $row['COUNT(*)'];
+    }
+    return $count_of_records_in_the_table;
 }
 
 function is_method($method = null)

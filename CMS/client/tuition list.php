@@ -31,7 +31,20 @@ connect_to_db();
                             <div class="container">
                                 <div class="row">
                                     <?php
-                                    read_tuition_requests_with_id();
+                                    $num_of_results = 3;
+                                    if (isset($_GET['page'])) {
+                                        $page = $_GET['page'];
+                                    } else {
+                                        $page = "";
+                                    }
+                                    if ($page == "" || $page == 1) {
+                                        $page_1 = 0;
+                                    } else {
+                                        // number of rows to be skipped
+                                        $page_1 = ($page * $num_of_results) - $num_of_results;
+                                    }
+
+                                    read_tuition_requests_with_id_LIMIT($page_1, $num_of_results);
                                     ?>
                                 </div>
 
@@ -43,6 +56,20 @@ connect_to_db();
                 </div>
 
             </div>
+
+            <ul class="pager">
+                <?php
+                $count = get_count_of_records_in_a_table("tuition request");
+                $count = ceil($count / $num_of_results);
+                for ($i = 1; $i <= $count; $i++) {
+                    if ($i == $page) {
+                        echo "<li><a class='active_link' href='tuition list.php?page={$i}'>{$i}</a></li>";
+                    } else {
+                        echo "<li><a href='tuition list.php?page={$i}'>{$i}</a></li>";
+                    }
+                }
+                ?>
+            </ul>
         </div>
     </div>
 
