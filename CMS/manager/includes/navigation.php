@@ -13,6 +13,8 @@
     <!-- Top Menu Items -->
     <ul class="nav navbar-right top-nav">
         <li><a href="../client/index.php">Client Home</a></li>
+        <li><a href="">Clients Online: <?php echo count_clients_online(); ?> </a></li>
+
         <!-- <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-envelope"></i> <b
                     class="caret"></b></a>
