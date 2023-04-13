@@ -280,7 +280,6 @@ function update_tuition_requests()
         } else {
             // echo "Query successful 😄";
             echo "Updated 😄. <a href='../client/tuition info.php?edit=" . $edit_id . "'>View the post</a>";
-            // redirect('tuition requests.php');
         }
     }
 }
@@ -377,8 +376,11 @@ function update_profile()
             die("QUERY FAILED" . mysqli_error($connection));
         }
 
-        echo "Saved 😊. <a href='profile.php'>Reload</a>";
-        // redirect('profile.php');
+        // echo "<div class='alert alert-success' role='alert'> Saved 😊. <a href='profile.php'>Reload</a>
+        // </div>";
+        // echo "Saved 😊. <a href='profile.php'>Reload</a>";
+
+        echo "Saved 😊. <a href='profile.php'>Reload</a> ";
     }
 }
 function edit_tuition_requests()
@@ -849,7 +851,6 @@ function register_user($email_or_phone, $password)
     }
 
     echo "Registration successful! You can Login now. 😊";
-    // redirect('login.php');
 }
 
 function is_logged_in()
